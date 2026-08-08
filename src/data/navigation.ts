@@ -1,11 +1,12 @@
 export const navigationItems = [
   { label: "Overzicht", href: "#overzicht" },
+  { label: "Woning", href: "#woning" },
   { label: "Foto's", href: "#fotos" },
   { label: "Kosten", href: "#kosten" },
-  { label: "Woning", href: "#woning" },
   { label: "Kamers", href: "#kamers" },
   { label: "Locatie", href: "#locatie" },
   { label: "Praktisch", href: "#praktisch" },
+  { label: "Vragen", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
