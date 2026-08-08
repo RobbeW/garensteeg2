@@ -1,0 +1,11 @@
+DO_NOT_UPLOAD/
+
+node_modules/
+.pnpm-store/
+dist/
+.server_*.log
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+public/images/**/*.jpg
+public/images/**/*.jpeg
