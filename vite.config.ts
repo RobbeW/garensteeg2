@@ -34,7 +34,11 @@ function removeSourceJpgsFromBuild() {
   };
 }
 
-export default defineConfig(({ command }) => ({
-  base: process.env.VITE_BASE_PATH ?? (command === "build" ? "/Garensteeg_2/" : "/"),
+function normalizeBasePath(basePath = "/") {
+  return basePath.endsWith("/") ? basePath : `${basePath}/`;
+}
+
+export default defineConfig(() => ({
+  base: normalizeBasePath(process.env.VITE_BASE_PATH),
   plugins: [react(), removeSourceJpgsFromBuild()],
 }));

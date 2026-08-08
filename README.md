@@ -30,7 +30,7 @@ python launch_demo.py
 
 ## GitHub Pages
 
-De Vite `base` staat in [vite.config.ts](./vite.config.ts) standaard op `/Garensteeg_2/` voor production builds. Voor een custom domain of root deployment zet je:
+De GitHub Pages-workflow geeft de juiste basisroute automatisch door aan Vite. Voor een handmatige build op een custom domain of root deployment zet je:
 
 ```bash
 VITE_BASE_PATH=/ npm run build
