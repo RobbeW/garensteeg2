@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages 
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -36,7 +36,8 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          # Custom-domain deployments serve the site from the domain root.
+          VITE_BASE_PATH: /
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
