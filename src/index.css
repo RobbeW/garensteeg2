@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #18211f;
+  background: #f6f7f3;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(246, 247, 243, 0.98) 0%, rgba(238, 244, 239, 0.88) 48%, rgba(249, 247, 240, 0.96) 100%);
+  color: #18211f;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.amenities-map {
+  background: #e6eee9;
+}
+
+.amenities-map .leaflet-control-zoom a {
+  color: #18211f;
+}
+
+.amenities-map .leaflet-control-attribution {
+  font-size: 10px;
+}
+
+.home-map-marker,
+.amenity-map-marker {
+  background: transparent;
+  border: 0;
+}
+
+.home-map-marker span {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: 7px solid #173f34;
+  border-radius: 999px;
+  background: #f7faf8;
+  box-shadow: 0 0 0 4px rgba(247, 250, 248, 0.6), 0 4px 12px rgba(23, 63, 52, 0.26);
+}
+
+.amenity-map-marker span {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  background: var(--marker-color);
+  box-shadow: 0 2px 8px rgba(24, 33, 31, 0.28);
+}
+
+@keyframes photoModal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+::selection {
+  background: #d8ebe2;
+  color: #18211f;
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-band {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  .section-band-muted {
+    background: linear-gradient(180deg, rgba(237, 242, 238, 0.88), rgba(247, 248, 244, 0.94));
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  .reveal {
+    min-width: 0;
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    filter: blur(5px);
+    transition:
+      opacity 720ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 720ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 720ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform, filter;
+  }
+
+  .reveal-left {
+    transform: translate3d(-26px, 0, 0);
+  }
+
+  .reveal-right {
+    transform: translate3d(26px, 0, 0);
+  }
+
+  .reveal-none {
+    transform: none;
+  }
+
+  .reveal-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+
+  .interactive-card {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .interactive-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 42px rgba(39, 107, 88, 0.14);
+  }
+
+  .image-lift {
+    @apply transition-transform duration-700 ease-out;
+  }
+
+  .group:hover .image-lift {
+    transform: scale(1.035);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-none,
+  .reveal-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .interactive-card:hover,
+  .group:hover .image-lift {
+    transform: none;
+  }
+}
