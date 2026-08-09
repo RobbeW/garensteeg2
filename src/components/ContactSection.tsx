@@ -12,7 +12,7 @@ import { Textarea } from "./ui/textarea";
 const TENANT_EMAIL = "robbe.wulgaert@gmail.com";
 const LANDLORD_EMAIL = "els.vandenbulcke@telenet.be";
 const recipients = [
-  { label: "Huidige huurder", name: "Robbe" },
+  { label: "Huidige huurders", name: "Hanne & Robbe" },
   { label: "Verhuurder", name: "Vandenbulcke E." },
 ];
 
