@@ -29,11 +29,11 @@ export function HeroSection() {
         <Reveal className="max-w-3xl" direction="left">
           <h1 className="text-4xl font-semibold leading-[1.05] text-white sm:text-5xl lg:text-6xl">{property.title}</h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-white/90">
-            Stadswoning aan {property.address.display}, vlakbij de Vrijdagsmarkt in het hart van Gent.
+            Stadswoning aan {property.address.display}, vlakbij de Vrijdagmarkt in het hart van Gent.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="#contact" size="lg">
-              Vraag een bezoek aan
+              Stel een vraag of vraag een bezoek aan
               <ArrowRight className="h-5 w-5" aria-hidden="true" />
             </ButtonLink>
             <ButtonLink href="#kosten" variant="glass" size="lg">

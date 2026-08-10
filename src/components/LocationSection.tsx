@@ -1,5 +1,4 @@
 import {
-  Bus,
   GraduationCap,
   HeartPulse,
   Landmark,
@@ -7,6 +6,7 @@ import {
   Route,
   ShoppingBasket,
   Train,
+  TramFront,
   Utensils,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -20,7 +20,7 @@ import { Reveal } from "./ui/reveal";
 
 const iconMap = {
   Train,
-  Bus,
+  TramFront,
   MapPin,
   GraduationCap,
   ShoppingBasket,

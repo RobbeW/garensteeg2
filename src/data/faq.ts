@@ -29,7 +29,7 @@ export const faq = [
   {
     question: "Hoe is de mobiliteit rond de woning?",
     answer:
-      "Het pand ligt vlakbij de Vrijdagsmarkt in het hart van Gent. Station, bushalte, winkels en het centrum zijn vlot te voet bereikbaar.",
+      "Het pand ligt vlakbij de Vrijdagmarkt in het hart van Gent. Station, bus- en tramhalte, winkels en het centrum zijn vlot te voet bereikbaar.",
   },
   {
     question: "Hoeveel slaapkamers zijn er?",

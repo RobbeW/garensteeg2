@@ -7,6 +7,7 @@ export type Room = {
   suitableFor: string;
   imageGroup: string;
   imageId?: string;
+  imageIds?: string[];
   notes: string[];
 };
 
@@ -40,6 +41,7 @@ export const rooms: Room[] = [
     suitableFor: "Slaapkamer",
     imageGroup: "bedrooms",
     imageId: "bedrooms-02",
+    imageIds: ["bedrooms-02", "bedrooms-01", "bedrooms-03", "bedrooms-04"],
     notes: [],
   },
   {
@@ -51,6 +53,7 @@ export const rooms: Room[] = [
     suitableFor: "Slaapkamer of werkruimte",
     imageGroup: "bedrooms",
     imageId: "bedrooms-06",
+    imageIds: ["bedrooms-06", "bedrooms-05", "bedrooms-07"],
     notes: [],
   },
   {
@@ -62,6 +65,7 @@ export const rooms: Room[] = [
     suitableFor: "Slaapkamer of werkruimte",
     imageGroup: "bedrooms",
     imageId: "bedrooms-09",
+    imageIds: ["bedrooms-09", "bedrooms-08", "bedrooms-10"],
     notes: [],
   },
   {

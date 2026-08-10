@@ -16,7 +16,13 @@ type RoomGallery = {
 };
 
 function roomPhotos(room: (typeof rooms)[number]) {
-  return photoGroups.find((photoGroup) => photoGroup.id === room.imageGroup)?.photos ?? [];
+  const photos = photoGroups.find((photoGroup) => photoGroup.id === room.imageGroup)?.photos ?? [];
+
+  if (room.imageIds === undefined) {
+    return photos;
+  }
+
+  return room.imageIds.flatMap((imageId) => photos.filter((photo) => photo.id === imageId));
 }
 
 function roomPreviewPhoto(room: (typeof rooms)[number]) {

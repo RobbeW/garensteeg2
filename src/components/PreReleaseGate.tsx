@@ -58,7 +58,6 @@ export function PreReleaseGate({ children }: PreReleaseGateProps) {
                 setError("");
               }}
               autoComplete="current-password"
-              autoFocus
               required
               aria-describedby={error ? "preview-password-error" : undefined}
             />

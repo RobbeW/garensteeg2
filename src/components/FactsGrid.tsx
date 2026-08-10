@@ -1,4 +1,4 @@
-import { BedDouble, Bus, CalendarDays, Euro, Home, MapPin, Route, Ruler, ShieldCheck, ShoppingBasket, Train } from "lucide-react";
+import { BedDouble, CalendarDays, Euro, Home, MapPin, Route, Ruler, ShieldCheck, ShoppingBasket, Train, TramFront } from "lucide-react";
 import { costs } from "../data/costs";
 import { property } from "../data/property";
 import { MonthlyCostInfo } from "./MonthlyCostInfo";
@@ -11,12 +11,12 @@ const facts = [
   { label: "Oppervlakte", value: property.surfaceM2, icon: Ruler },
   { label: "Huurprijs", value: costs.rent.display, icon: Euro },
   { label: "Maandkost totaal", value: costs.totals.totalIncludingRent.display, icon: Euro },
-  { label: "Ligging", value: "Vlakbij Vrijdagsmarkt", icon: Route },
+  { label: "Ligging", value: "Vlakbij Vrijdagmarkt", icon: Route },
   { label: "Station", value: "Te voet bereikbaar", icon: Train },
-  { label: "Bushalte", value: "Te voet bereikbaar", icon: Bus },
-  { label: "Vrijdagsmarkt", value: "Vlakbij", icon: MapPin },
+  { label: "Bus- en tramhalte", value: "Te voet bereikbaar", icon: TramFront },
+  { label: "Vrijdagmarkt", value: "Vlakbij", icon: MapPin },
   { label: "Winkels", value: "Te voet bereikbaar", icon: ShoppingBasket },
-  { label: "Snelwegafrit", value: "Op ongeveer 3,1 km", icon: Route },
+  { label: "Snelwegaf- en oprit", value: "Op ongeveer 3,1 km", icon: Route },
   { label: "EPC", value: property.epc.label, icon: ShieldCheck },
   { label: "Beschikbaar vanaf", value: property.availability, icon: CalendarDays },
   { label: "Aantal slaapkamers", value: property.bedrooms, icon: BedDouble },

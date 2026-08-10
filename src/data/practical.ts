@@ -12,4 +12,4 @@ export const practicalItems = [
 ] as const;
 
 export const propertyDescription =
-  "Stadswoning van ongeveer 120 m² vlakbij de Vrijdagsmarkt in het hart van Gent, met een grote slaapkamer, twee kleinere kamers die als slaapkamer of werkruimte kunnen dienen, en een koertje. De huidige huurders verhuizen omdat ze een eigen woning kochten.";
+  "Stadswoning van ongeveer 120 m² vlakbij de Vrijdagmarkt in het hart van Gent, met een grote slaapkamer, twee kleinere kamers die als slaapkamer of werkruimte kunnen dienen, en een koertje. De huidige huurders verhuizen omdat ze een eigen woning kochten.";

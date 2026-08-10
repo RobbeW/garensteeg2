@@ -1,6 +1,6 @@
 export type IconName =
   | "Train"
-  | "Bus"
+  | "TramFront"
   | "MapPin"
   | "GraduationCap"
   | "ShoppingBasket"
@@ -18,26 +18,26 @@ export const location = {
     display: "Garensteeg 2, 9000 Gent",
   },
   intro:
-    "Het pand ligt vlakbij de Vrijdagsmarkt in het hart van Gent. Dagelijkse verplaatsingen kunnen makkelijk te voet, met de fiets of met het openbaar vervoer.",
+    "Het pand ligt vlakbij de Vrijdagmarkt in het hart van Gent. Dagelijkse verplaatsingen kunnen makkelijk te voet, met de fiets of met het openbaar vervoer.",
   mobility: {
     scoreLabel: "Vlot bereikbaar",
     source: "Realo",
     sourceNote: "Buurtdata: Realo, geraadpleegd juli 2026.",
     description:
-      "Station, bushalte, winkels en het stadscentrum zijn makkelijk te voet bereikbaar vanaf de woning.",
+      "Station, bus- en tramhalte, winkels en het stadscentrum zijn makkelijk te voet bereikbaar vanaf de woning.",
     items: [
       { label: "Station", value: "Bereikbaar te voet", icon: "Train" },
-      { label: "Bushalte", value: "Bereikbaar te voet", icon: "Bus" },
-      { label: "Vrijdagsmarkt", value: "Vlakbij", icon: "MapPin" },
+      { label: "Bus- en tramhalte", value: "Bereikbaar te voet", icon: "TramFront" },
+      { label: "Vrijdagmarkt", value: "Vlakbij", icon: "MapPin" },
       { label: "Scholen", value: "Bereikbaar te voet", icon: "GraduationCap" },
       { label: "Winkels", value: "Bereikbaar te voet", icon: "ShoppingBasket" },
-      { label: "Snelwegafrit", value: "Op ongeveer 3,1 km", icon: "Route" },
+      { label: "Snelwegaf- en oprit", value: "Op ongeveer 3,1 km", icon: "Route" },
     ] satisfies Array<{ label: string; value: string; icon: IconName }>,
   },
   amenities: {
     radius: "1 km",
     map: {
-      center: [51.05768, 3.72776] as [number, number],
+      center: [51.05788621725058, 3.7261153154529865] as [number, number],
       zoom: 15,
       radiusMeters: 1000,
     },

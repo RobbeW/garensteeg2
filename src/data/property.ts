@@ -1,6 +1,6 @@
 export const property = {
   title: "Huis te huur in Gent",
-  subtitle: "Stadswoning vlakbij de Vrijdagsmarkt, met vaste huurprijs en duidelijke maandkosten.",
+  subtitle: "Stadswoning vlakbij de Vrijdagmarkt, met vaste huurprijs en duidelijke maandkosten.",
   address: {
     street: "Garensteeg 2",
     postalCode: "9000",

@@ -13,7 +13,7 @@ const TENANT_EMAIL = "robbe.wulgaert@gmail.com";
 const LANDLORD_EMAIL = "els.vandenbulcke@telenet.be";
 const recipients = [
   { label: "Huidige huurders", name: "Hanne & Robbe" },
-  { label: "Verhuurder", name: "Vandenbulcke E." },
+  { label: "Huiseigenaar", name: "Els Vandenbulcke" },
 ];
 
 function fieldValue(formData: FormData, name: string) {
@@ -36,7 +36,7 @@ export function ContactSection() {
       fieldValue(formData, "message") || "Niet ingevuld",
     ];
 
-    const subject = encodeURIComponent(`Vraag of bezoekaanvraag ${property.address.display}`);
+    const subject = encodeURIComponent(`Vraag of bezoekaanvraag: ${property.address.display}`);
     const body = encodeURIComponent(lines.join("\n"));
     window.location.href = `mailto:${TENANT_EMAIL}?cc=${encodeURIComponent(LANDLORD_EMAIL)}&subject=${subject}&body=${body}`;
   }
@@ -46,7 +46,7 @@ export function ContactSection() {
       <div className="section-shell">
         <SectionHeader
           title="Contact"
-          description="Stel een vraag of vraag een bezoek aan. Je bericht opent als e-mail naar de huidige huurder, met Vandenbulcke E. in cc."
+          description="Stel een vraag of vraag een bezoek aan. Je bericht opent als e-mail naar de huidige huurders, met huiseigenaar Els Vandenbulcke in cc."
         />
         <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
           <Reveal direction="left">
@@ -54,7 +54,7 @@ export function ContactSection() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Mail className="h-5 w-5 text-accent" aria-hidden="true" />
-                  Vraag of bezoek aanvragen
+                  Stel een vraag of vraag een bezoek aan
                 </CardTitle>
                 <CardDescription>Vermeld gerust je vraag of wanneer je kan langskomen.</CardDescription>
               </CardHeader>
