@@ -18,8 +18,8 @@ export const costs = {
     id: "rent",
     label: "Huurprijs",
     provider: null,
-    amount: 995.78,
-    display: "€995,78 / maand",
+    amount: 1050.0,
+    display: "€1.050,00 / maand",
     cadence: "monthly",
     type: "contractual",
     badge: "vast",
@@ -79,9 +79,9 @@ export const costs = {
       calculation: "37.00 + 33.38 + 40.67 + 117.42",
     },
     totalIncludingRent: {
-      amount: 1224.25,
-      display: "€1.224,25 / maand",
-      calculation: "995.78 + 228.47",
+      amount: 1278.47,
+      display: "€1.278,47 / maand",
+      calculation: "1050.00 + 228.47",
     },
   },
   copy: {
@@ -90,6 +90,6 @@ export const costs = {
     disclaimer:
       "Internet, verzekering, water, gas en elektriciteit vertrekken van de huidige situatie en het huidige verbruik. Je eigen kosten kunnen verschillen door verbruik, leverancier, contractformule en prijswijzigingen.",
     totalNote:
-      "Samen komt dit vandaag neer op ongeveer €1.224,25 per maand, inclusief huur en de hierboven vermelde kosten.",
+      "Samen komt dit vandaag neer op ongeveer €1.278,47 per maand, inclusief huur en de hierboven vermelde kosten.",
   },
 } as const;

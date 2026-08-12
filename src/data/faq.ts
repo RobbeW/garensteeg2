@@ -1,7 +1,7 @@
 export const faq = [
   {
     question: "Wat bedraagt de huurprijs?",
-    answer: "De huurprijs bedraagt €995,78 per maand.",
+    answer: "De huurprijs bedraagt €1.050,00 per maand.",
   },
   {
     question: "Welke maandkosten komen daar ongeveer bij?",
@@ -10,7 +10,7 @@ export const faq = [
   {
     question: "Wat is de totale maandkost ongeveer?",
     answer:
-      "De totale maandkost bedraagt vandaag ongeveer €1.224,25 per maand, inclusief huur, internet, verzekering, water, gas en elektriciteit.",
+      "De totale maandkost bedraagt vandaag ongeveer €1.278,47 per maand, inclusief huur, internet, verzekering, water, gas en elektriciteit.",
   },
   {
     question: "Zijn de verbruikskosten vast?",
@@ -51,6 +51,7 @@ export const faq = [
   },
   {
     question: "Hoe kan ik een bezoek aanvragen?",
-    answer: "Via het contactformulier of via e-mail.",
+    answer:
+      "Via het contactformulier of via e-mail. Een bezoekmoment is pas definitief na bevestiging per e-mail, zodat we de bezoeken vlot en aangenaam kunnen laten verlopen voor iedereen.",
   },
 ] as const;

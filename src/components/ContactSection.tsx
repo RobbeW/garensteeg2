@@ -16,6 +16,11 @@ const recipients = [
   { label: "Huiseigenaar", name: "Els Vandenbulcke" },
 ];
 
+const visitMoments = [
+  { value: "26 augustus 2026, 16.30 tot 18.30 uur", date: "26 augustus 2026", time: "16.30 tot 18.30 uur" },
+  { value: "29 augustus 2026, 13.00 tot 15.00 uur", date: "29 augustus 2026", time: "13.00 tot 15.00 uur" },
+] as const;
+
 function fieldValue(formData: FormData, name: string) {
   return String(formData.get(name) ?? "").trim();
 }
@@ -29,8 +34,9 @@ export function ContactSection() {
       `E-mail: ${fieldValue(formData, "email")}`,
       `Telefoon: ${fieldValue(formData, "phone") || "Niet ingevuld"}`,
       "",
-      "Voorkeurmomenten voor bezoek:",
-      fieldValue(formData, "preferred_visit_moments") || "Niet ingevuld",
+      "Gewenst bezoekmoment:",
+      fieldValue(formData, "preferred_visit_moment") || "Geen voorkeur opgegeven",
+      "Een bezoekmoment is pas definitief na bevestiging per e-mail.",
       "",
       "Bericht:",
       fieldValue(formData, "message") || "Niet ingevuld",
@@ -56,7 +62,7 @@ export function ContactSection() {
                   <Mail className="h-5 w-5 text-accent" aria-hidden="true" />
                   Stel een vraag of vraag een bezoek aan
                 </CardTitle>
-                <CardDescription>Vermeld gerust je vraag of wanneer je kan langskomen.</CardDescription>
+                <CardDescription>Vermeld gerust je vraag of kies een moment waarop je kan langskomen.</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm leading-6 text-text-muted">
@@ -96,10 +102,24 @@ export function ContactSection() {
                       <Input id="phone" name="phone" type="tel" autoComplete="tel" />
                     </div>
                   </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="preferred_visit_moments">Voorkeurmomenten voor bezoek</Label>
-                    <Textarea id="preferred_visit_moments" name="preferred_visit_moments" />
-                  </div>
+                  <fieldset className="grid gap-2">
+                    <legend className="text-sm font-semibold text-text">Gewenst bezoekmoment</legend>
+                    <p className="text-sm leading-6 text-text-muted">
+                      Kies een voorkeur voor een bezoek. Een moment is pas definitief na bevestiging per e-mail, zodat we de bezoeken vlot en aangenaam kunnen organiseren voor iedereen.
+                    </p>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {visitMoments.map((moment) => (
+                        <Label
+                          key={moment.value}
+                          className="group cursor-pointer rounded-md border border-border bg-white/90 p-3 transition-colors hover:border-accent hover:bg-accent-soft/50 has-[:checked]:border-accent has-[:checked]:bg-accent-soft"
+                        >
+                          <input className="sr-only" type="radio" name="preferred_visit_moment" value={moment.value} />
+                          <span className="block text-sm font-semibold text-text">{moment.date}</span>
+                          <span className="mt-1 block text-sm font-normal text-text-muted">{moment.time}</span>
+                        </Label>
+                      ))}
+                    </div>
+                  </fieldset>
                   <div className="grid gap-2">
                     <Label htmlFor="message">Bericht</Label>
                     <Textarea id="message" name="message" />
