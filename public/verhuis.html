@@ -271,7 +271,7 @@
         <div>
           <p class="eyebrow">9–13 oktober 2026</p>
           <h1>Help je mee verhuizen?</h1>
-          <p class="hero-copy">Kies wanneer je kan helpen, wat je meebrengt en eventueel welke kamer je onder je hoede neemt. We houden het overzicht samen bij.</p>
+          <p class="hero-copy">Kies wanneer je kan helpen, wat je meebrengt en eventueel welke kamer je onder je hoede neemt. Help jij ons verhuizen?</p>
           <div class="route-chipline" aria-label="Verhuisroute">
             <span class="route-chip">Garensteeg 2</span>
             <span class="route-arrow" aria-hidden="true">→</span>
@@ -303,21 +303,21 @@
 
           <section class="step" data-step="0">
             <p class="step-eyebrow">Stap 1</p>
-            <h2>Hoe mogen we je noemen?</h2>
+            <h2>Voer jouw voornaam in</h2>
             <p class="step-description">Alleen je voornaam. We verzamelen geen e-mailadres, telefoonnummer of andere contactgegevens.</p>
             <label>
               <span class="field-label">Voornaam</span>
               <input class="input" id="firstName" type="text" maxlength="40" autocomplete="given-name" placeholder="Je voornaam" />
             </label>
             <div class="nav-row" style="justify-content:flex-end">
-              <button class="btn btn-primary" id="toDate" type="button" disabled>Kies een moment →</button>
+              <button class="btn btn-primary" id="toDate" type="button" disabled>Kies je momenten →</button>
             </div>
           </section>
 
           <section class="step hidden" data-step="1">
             <p class="step-eyebrow">Stap 2</p>
             <h2 id="dateHeading">Wanneer kan je helpen?</h2>
-            <p class="step-description">Kies het moment waarop we op jou kunnen rekenen. Vrijdag starten we rond 18 uur.</p>
+            <p class="step-description">Kies één of meerdere momenten waarop we op jou kunnen rekenen.</p>
             <div class="choice-grid three" id="dateChoices"></div>
             <div class="nav-row">
               <button class="btn btn-secondary" data-back type="button">← Terug</button>
@@ -339,7 +339,7 @@
           <section class="step hidden" data-step="3">
             <p class="step-eyebrow">Stap 4 · optioneel</p>
             <h2>Neem een kamer onder je hoede</h2>
-            <p class="step-description">Bekijk links wat uit de oude woning komt en rechts waar het in de nieuwe woning terechtkomt. Een kamer kiezen is niet verplicht.</p>
+            <p class="step-description">Bekijk links wat uit de oude woning komt en rechts waar het in de nieuwe woning terechtkomt. Een kamer kiezen is niet verplicht, maar zo weet je meteen wat jouw terrein is!</p>
             <div class="room-tabs" id="roomTabs"></div>
             <div class="room-titlebar">
               <div><p>Ruimte</p><h3 id="activeRoomLabel"></h3></div>
@@ -373,7 +373,7 @@
             <p class="step-description">Controleer je inschrijving. Je voornaam en keuzes worden zichtbaar in het verhuisteam.</p>
             <div class="review">
               <div class="review-row"><span class="review-label">Voornaam</span><span class="review-value" id="reviewName"></span><button class="link-button" type="button" data-goto="0">Wijzig</button></div>
-              <div class="review-row"><span class="review-label">Moment</span><span class="review-value" id="reviewDate"></span><button class="link-button" type="button" data-goto="1">Wijzig</button></div>
+              <div class="review-row"><span class="review-label">Momenten</span><span class="review-value" id="reviewDate"></span><button class="link-button" type="button" data-goto="1">Wijzig</button></div>
               <div class="review-row"><span class="review-label">Bijdrage</span><span class="review-value" id="reviewHelp"></span><button class="link-button" type="button" data-goto="2">Wijzig</button></div>
               <div class="review-row"><span class="review-label">Kamer</span><span class="review-value" id="reviewRoom"></span><button class="link-button" type="button" data-goto="3">Wijzig</button></div>
             </div>
@@ -441,17 +441,19 @@
 
       const API_URL = "https://script.google.com/macros/s/AKfycbxyyX2o3ka0PTrcM-fdyzCjsVBM_e5ZzW92jyvtC-wrhB6_WnVwaBT-JbOpFe4FFZPtzQ/exec";
       const RAW_AVO = "https://raw.githubusercontent.com/RobbeW/garensteeg2/main/Photos_AVO/";
-      const stepLabels = ["Voornaam", "Datum", "Bijdrage", "Kamer", "Controle"];
+      const stepLabels = ["Voornaam", "Momenten", "Bijdrage", "Kamer", "Controle"];
 
       const fallbackConfig = {
         ok: true,
         registrationOpen: true,
         dates: [
-          { id: "vrijdag_09_10", label: "Vrijdag 9 oktober", date: "2026-10-09", time: "± 18:00", active: true, order: 1 },
-          { id: "zaterdag_10_10", label: "Zaterdag 10 oktober", date: "2026-10-10", time: "", active: true, order: 2 },
-          { id: "zondag_11_10", label: "Zondag 11 oktober", date: "2026-10-11", time: "", active: true, order: 3 },
-          { id: "maandag_12_10", label: "Maandag 12 oktober", date: "2026-10-12", time: "", active: true, order: 4 },
-          { id: "dinsdag_13_10", label: "Dinsdag 13 oktober", date: "2026-10-13", time: "", active: true, order: 5 }
+          { id: "vrijdag_09_10_avond", label: "Vrijdag 9 oktober", date: "2026-10-09", time: "Avond na 18 uur", active: true, order: 1 },
+          { id: "zaterdag_10_10_voormiddag", label: "Zaterdag 10 oktober", date: "2026-10-10", time: "Voormiddag", active: true, order: 2 },
+          { id: "zaterdag_10_10_namiddag", label: "Zaterdag 10 oktober", date: "2026-10-10", time: "Namiddag", active: true, order: 3 },
+          { id: "zondag_11_10_voormiddag", label: "Zondag 11 oktober", date: "2026-10-11", time: "Voormiddag", active: true, order: 4 },
+          { id: "zondag_11_10_namiddag", label: "Zondag 11 oktober", date: "2026-10-11", time: "Namiddag", active: true, order: 5 },
+          { id: "maandag_12_10_avond", label: "Maandag 12 oktober", date: "2026-10-12", time: "Avond na 18 uur", active: true, order: 6 },
+          { id: "dinsdag_13_10_avond", label: "Dinsdag 13 oktober", date: "2026-10-13", time: "Avond na 18 uur", active: true, order: 7 }
         ],
         helpTypes: [
           { id: "spierkracht", label: "Spierkracht", active: true, order: 1 },
@@ -523,7 +525,7 @@
         backendAvailable: false,
         step: 0,
         firstName: "",
-        dateId: "",
+        dateIds: [],
         helpTypes: [],
         roomId: "",
         activeRoomId: "woonkamer",
@@ -598,7 +600,7 @@
           action: "register",
           id: payload.id,
           firstName: payload.firstName,
-          dateId: payload.dateId,
+          dateIds: payload.dateIds.join("|"),
           helpTypes: payload.helpTypes.join("|"),
           roomId: payload.roomId,
           website: ""
@@ -638,18 +640,21 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      function activeDate() { return state.config.dates.find((item) => item.id === state.dateId); }
+      function activeDates() { return state.config.dates.filter((item) => state.dateIds.includes(item.id)); }
       function activeRoom() { return state.config.rooms.find((item) => item.id === state.activeRoomId) || state.config.rooms[0]; }
       function selectedRoom() { return state.config.rooms.find((item) => item.id === state.roomId); }
 
       function renderDates() {
-        $("#dateChoices").innerHTML = state.config.dates.filter((item) => item.active).map((date) => `
-          <button class="choice date ${state.dateId === date.id ? "selected" : ""}" type="button" data-date-id="${escapeHtml(date.id)}">
-            <span class="choice-mark">${String(date.order || "")}</span>
+        $("#dateChoices").innerHTML = state.config.dates.filter((item) => item.active).map((date) => {
+          const selected = state.dateIds.includes(date.id);
+          return `
+          <button class="choice date ${selected ? "selected" : ""}" type="button" data-date-id="${escapeHtml(date.id)}" aria-pressed="${selected}">
+            <span class="choice-mark">${selected ? "✓" : String(date.order || "")}</span>
             <span class="choice-title">${escapeHtml(date.label)}</span>
-            <span class="choice-meta">${escapeHtml(date.time || "Overdag")}</span>
-          </button>`).join("");
-        $("#toHelp").disabled = !state.dateId;
+            <span class="choice-meta">${escapeHtml(date.time)}</span>
+          </button>`;
+        }).join("");
+        $("#toHelp").disabled = state.dateIds.length === 0;
       }
 
       function renderHelp() {
@@ -709,9 +714,9 @@
       }
 
       function updateReview() {
-        const date = activeDate();
+        const dates = activeDates();
         $("#reviewName").textContent = state.firstName;
-        $("#reviewDate").textContent = date ? `${date.label}${date.time ? ` · ${date.time}` : ""}` : "—";
+        $("#reviewDate").textContent = dates.length ? dates.map((date) => `${date.label} · ${date.time}`).join("; ") : "—";
         $("#reviewHelp").textContent = state.config.helpTypes.filter((type) => state.helpTypes.includes(type.id)).map((type) => type.label).join(" · ");
         $("#reviewRoom").textContent = selectedRoom()?.label || "Geen specifieke kamer";
         $("#closedNotice").classList.toggle("hidden", state.config.registrationOpen !== false);
@@ -763,11 +768,11 @@
           if (!response.ok) throw new Error(response.error || "Roster unavailable");
           const roster = Array.isArray(response.roster) ? response.roster : [];
           $("#rosterBody").innerHTML = state.config.dates.map((date) => {
-            const entries = roster.filter((entry) => entry.dateId === date.id);
+            const entries = roster.filter((entry) => (entry.dateIds || (entry.dateId ? [entry.dateId] : [])).includes(date.id));
             return `
               <section class="roster-day">
                 <div class="roster-day-head"><div><h3>${escapeHtml(date.label)}</h3>${date.time ? `<p>${escapeHtml(date.time)}</p>` : ""}</div><span class="count">${entries.length} helper${entries.length === 1 ? "" : "s"}</span></div>
-                ${entries.length ? entries.map((entry) => `<div class="roster-row"><strong>${escapeHtml(entry.firstName)}</strong><span>${escapeHtml((entry.helpTypes || []).join(" · "))}</span><span>${escapeHtml(entry.room || "Geen specifieke kamer")}</span></div>`).join("") : `<p class="roster-empty">Nog niemand ingeschreven voor deze dag.</p>`}
+                ${entries.length ? entries.map((entry) => `<div class="roster-row"><strong>${escapeHtml(entry.firstName)}</strong><span>${escapeHtml((entry.helpTypes || []).join(" · "))}</span><span>${escapeHtml(entry.room || "Geen specifieke kamer")}</span></div>`).join("") : `<p class="roster-empty">Nog niemand ingeschreven voor dit moment.</p>`}
               </section>`;
           }).join("");
         } catch (_) {
@@ -820,7 +825,8 @@
       $("#dateChoices").addEventListener("click", (event) => {
         const button = event.target.closest("[data-date-id]");
         if (!button) return;
-        state.dateId = button.dataset.dateId;
+        const id = button.dataset.dateId;
+        state.dateIds = state.dateIds.includes(id) ? state.dateIds.filter((item) => item !== id) : [...state.dateIds, id];
         renderDates();
       });
       $("#toHelp").addEventListener("click", () => showStep(2));
@@ -891,10 +897,13 @@
         const registrationId = createRegistrationId();
 
         try {
-          await submitToBackend({ id: registrationId, firstName: state.firstName, dateId: state.dateId, helpTypes: state.helpTypes, roomId: state.roomId });
+          await submitToBackend({ id: registrationId, firstName: state.firstName, dateIds: state.dateIds, helpTypes: state.helpTypes, roomId: state.roomId });
           localStorage.setItem("verhuis-registration-id", registrationId);
           $("#thanksName").textContent = state.firstName;
-          $("#thanksCopy").textContent = `We rekenen op je voor ${activeDate()?.label.toLowerCase() || "de verhuis"}. Hieronder kan je het team en de route alvast bekijken.`;
+          const selectedMoments = activeDates();
+          $("#thanksCopy").textContent = selectedMoments.length === 1
+            ? `We rekenen op je op ${selectedMoments[0].label.toLowerCase()} · ${selectedMoments[0].time.toLowerCase()}. Hieronder kan je het team en de route alvast bekijken.`
+            : `We rekenen op je hulp tijdens ${selectedMoments.length} momenten. Hieronder kan je het team en de route alvast bekijken.`;
           $("#drivingRoute").href = mapsUrl("driving");
           $("#bikeRoute").href = mapsUrl("bicycling");
           state.submitting = false;
