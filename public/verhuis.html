@@ -299,8 +299,6 @@
             <div class="progress-bars" id="progressBars" aria-hidden="true"></div>
           </div>
 
-          <div class="notice hidden" id="backendNotice">De live planning kon niet worden geladen. Je kan de stappen bekijken, maar inschrijven is tijdelijk uitgeschakeld.</div>
-
           <section class="step" data-step="0">
             <p class="step-eyebrow">Stap 1</p>
             <h2>Voer jouw voornaam in</h2>
@@ -526,7 +524,6 @@
 
       const state = {
         config: fallbackConfig,
-        backendAvailable: false,
         step: 0,
         firstName: "",
         dateIds: [],
@@ -597,10 +594,15 @@
         return `verhuis_${Date.now()}_${Math.random().toString(36).slice(2, 12)}`;
       }
 
-      const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+      function submitRegistrationForm(payload) {
+        sessionStorage.setItem("verhuis-pending-registration", JSON.stringify(payload));
 
-      async function submitToBackend(payload) {
-        const body = new URLSearchParams({
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = API_URL;
+        form.style.display = "none";
+
+        const fields = {
           action: "register",
           id: payload.id,
           firstName: payload.firstName,
@@ -608,20 +610,59 @@
           helpTypes: payload.helpTypes.join("|"),
           roomId: payload.roomId,
           website: ""
+        };
+
+        Object.entries(fields).forEach(([name, value]) => {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = name;
+          input.value = value;
+          form.appendChild(input);
         });
 
-        await fetch(API_URL, { method: "POST", mode: "no-cors", body });
+        document.body.appendChild(form);
+        form.submit();
+      }
 
-        for (let attempt = 0; attempt < 8; attempt += 1) {
-          await wait(attempt === 0 ? 650 : 500);
-          try {
-            const status = await jsonp({ action: "status", id: payload.id }, 6000);
-            if (status && status.ok && status.exists) return;
-          } catch (_) {
-            // Nogmaals proberen: de POST kan al verwerkt zijn.
-          }
+      function restorePendingRegistration() {
+        try {
+          const raw = sessionStorage.getItem("verhuis-pending-registration");
+          if (!raw) return null;
+          const pending = JSON.parse(raw);
+          if (!pending || typeof pending !== "object") return null;
+          return pending;
+        } catch (_) {
+          return null;
         }
-        throw new Error("De inschrijving kon niet bevestigd worden. Probeer opnieuw.");
+      }
+
+      function applyPendingRegistration(pending) {
+        if (!pending) return;
+        state.firstName = String(pending.firstName || "").trim();
+        state.dateIds = Array.isArray(pending.dateIds) ? pending.dateIds : [];
+        state.helpTypes = Array.isArray(pending.helpTypes) ? pending.helpTypes : [];
+        state.roomId = String(pending.roomId || "");
+        if (state.roomId) state.activeRoomId = state.roomId;
+        $("#firstName").value = state.firstName;
+        $("#toDate").disabled = !(state.firstName.length > 0 && state.firstName.length <= 40);
+      }
+
+      function showSuccessState(pending, registrationId) {
+        applyPendingRegistration(pending);
+        if (registrationId) localStorage.setItem("verhuis-registration-id", registrationId);
+
+        $("#thanksName").textContent = state.firstName || "helper";
+        const selectedMoments = activeDates();
+        $("#thanksCopy").textContent = selectedMoments.length === 1
+          ? `We rekenen op je op ${selectedMoments[0].label.toLowerCase()} · ${selectedMoments[0].time.toLowerCase()}. Hieronder kan je het team en de route alvast bekijken.`
+          : selectedMoments.length > 1
+            ? `We rekenen op je hulp tijdens ${selectedMoments.length} momenten. Hieronder kan je het team en de route alvast bekijken.`
+            : "Je inschrijving werd opgeslagen. Hieronder kan je het team en de route bekijken.";
+
+        $("#drivingRoute").href = mapsUrl("driving");
+        $("#bikeRoute").href = mapsUrl("bicycling");
+        sessionStorage.removeItem("verhuis-pending-registration");
+        showStep(5);
       }
 
       function updateProgress() {
@@ -724,7 +765,7 @@
         $("#reviewHelp").textContent = state.config.helpTypes.filter((type) => state.helpTypes.includes(type.id)).map((type) => type.label).join(" · ");
         $("#reviewRoom").textContent = selectedRoom()?.label || "Geen specifieke kamer";
         $("#closedNotice").classList.toggle("hidden", state.config.registrationOpen !== false);
-        $("#submitRegistration").disabled = !(state.backendAvailable && state.config.registrationOpen !== false && !state.submitting);
+        $("#submitRegistration").disabled = !(state.config.registrationOpen !== false && !state.submitting);
       }
 
       function mapsUrl(mode) {
@@ -789,38 +830,31 @@
         document.body.style.overflow = "";
       }
 
-      async function initialise() {
+      function initialise() {
+        state.config = fallbackConfig;
+        state.activeRoomId = (state.config.rooms || []).find((room) => room.active)?.id || "woonkamer";
+
+        const params = new URLSearchParams(window.location.search);
+        const result = params.get("registration");
+        const pending = restorePendingRegistration();
+
+        applyPendingRegistration(pending);
         updateProgress();
         renderDates();
         renderHelp();
         renderRoom();
+        updateReview();
 
-        try {
-          const config = await jsonp({ action: "config" });
-          if (!config || !config.ok) throw new Error("Invalid config");
-          state.config = {
-            ...config,
-            dates: (config.dates || []).map(({ id, label, time, active, order }) => ({
-              id,
-              label: String(label || ""),
-              time: String(time || ""),
-              active: Boolean(active),
-              order: Number(order || 0)
-            }))
-          };
-          state.backendAvailable = true;
-          state.activeRoomId = (state.config.rooms || []).find((room) => room.active)?.id || "woonkamer";
-          $("#backendNotice").classList.add("hidden");
-        } catch (_) {
-          state.config = fallbackConfig;
-          state.backendAvailable = false;
-          $("#backendNotice").classList.remove("hidden");
+        if (result === "success") {
+          showSuccessState(pending, params.get("id") || "");
+          return;
         }
 
-        renderDates();
-        renderHelp();
-        renderRoom();
-        updateReview();
+        if (result === "error") {
+          showStep(4);
+          $("#submitError").textContent = params.get("message") || "De inschrijving kon niet worden opgeslagen. Probeer opnieuw.";
+          $("#submitError").classList.remove("hidden");
+        }
       }
 
       $("#firstName").addEventListener("input", (event) => {
@@ -901,33 +935,22 @@
         }
       });
 
-      $("#submitRegistration").addEventListener("click", async () => {
-        if (!state.backendAvailable || !state.config.registrationOpen || state.submitting) return;
+      $("#submitRegistration").addEventListener("click", () => {
+        if (!state.config.registrationOpen || state.submitting) return;
+
         state.submitting = true;
         $("#submitRegistration").disabled = true;
         $("#submitRegistration").textContent = "Inschrijving opslaan…";
         $("#submitError").classList.add("hidden");
-        const registrationId = createRegistrationId();
 
-        try {
-          await submitToBackend({ id: registrationId, firstName: state.firstName, dateIds: state.dateIds, helpTypes: state.helpTypes, roomId: state.roomId });
-          localStorage.setItem("verhuis-registration-id", registrationId);
-          $("#thanksName").textContent = state.firstName;
-          const selectedMoments = activeDates();
-          $("#thanksCopy").textContent = selectedMoments.length === 1
-            ? `We rekenen op je op ${selectedMoments[0].label.toLowerCase()} · ${selectedMoments[0].time.toLowerCase()}. Hieronder kan je het team en de route alvast bekijken.`
-            : `We rekenen op je hulp tijdens ${selectedMoments.length} momenten. Hieronder kan je het team en de route alvast bekijken.`;
-          $("#drivingRoute").href = mapsUrl("driving");
-          $("#bikeRoute").href = mapsUrl("bicycling");
-          state.submitting = false;
-          showStep(5);
-        } catch (error) {
-          state.submitting = false;
-          $("#submitRegistration").textContent = "✓ Schrijf mij in";
-          updateReview();
-          $("#submitError").textContent = error instanceof Error ? error.message : "De inschrijving kon niet worden opgeslagen.";
-          $("#submitError").classList.remove("hidden");
-        }
+        const registrationId = createRegistrationId();
+        submitRegistrationForm({
+          id: registrationId,
+          firstName: state.firstName,
+          dateIds: state.dateIds,
+          helpTypes: state.helpTypes,
+          roomId: state.roomId
+        });
       });
 
       $("#openRosterTop").addEventListener("click", openRoster);
@@ -957,7 +980,7 @@
         }
       });
 
-      void initialise();
+      initialise();
     })();
   </script>
 </body>
