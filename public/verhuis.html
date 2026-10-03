@@ -447,13 +447,13 @@
         ok: true,
         registrationOpen: true,
         dates: [
-          { id: "vrijdag_09_10_avond", label: "Vrijdag 9 oktober", date: "2026-10-09", time: "Avond na 18 uur", active: true, order: 1 },
-          { id: "zaterdag_10_10_voormiddag", label: "Zaterdag 10 oktober", date: "2026-10-10", time: "Voormiddag", active: true, order: 2 },
-          { id: "zaterdag_10_10_namiddag", label: "Zaterdag 10 oktober", date: "2026-10-10", time: "Namiddag", active: true, order: 3 },
-          { id: "zondag_11_10_voormiddag", label: "Zondag 11 oktober", date: "2026-10-11", time: "Voormiddag", active: true, order: 4 },
-          { id: "zondag_11_10_namiddag", label: "Zondag 11 oktober", date: "2026-10-11", time: "Namiddag", active: true, order: 5 },
-          { id: "maandag_12_10_avond", label: "Maandag 12 oktober", date: "2026-10-12", time: "Avond na 18 uur", active: true, order: 6 },
-          { id: "dinsdag_13_10_avond", label: "Dinsdag 13 oktober", date: "2026-10-13", time: "Avond na 18 uur", active: true, order: 7 }
+          { id: "vrijdag_09_10_avond", label: "Vrijdag", time: "Avond na 18 uur", active: true, order: 1 },
+          { id: "zaterdag_10_10_voormiddag", label: "Zaterdag", time: "Voormiddag", active: true, order: 2 },
+          { id: "zaterdag_10_10_namiddag", label: "Zaterdag", time: "Namiddag", active: true, order: 3 },
+          { id: "zondag_11_10_voormiddag", label: "Zondag", time: "Voormiddag", active: true, order: 4 },
+          { id: "zondag_11_10_namiddag", label: "Zondag", time: "Namiddag", active: true, order: 5 },
+          { id: "maandag_12_10_avond", label: "Maandag", time: "Avond na 18 uur", active: true, order: 6 },
+          { id: "dinsdag_13_10_avond", label: "Dinsdag", time: "Avond na 18 uur", active: true, order: 7 }
         ],
         helpTypes: [
           { id: "spierkracht", label: "Spierkracht", active: true, order: 1 },
@@ -794,9 +794,18 @@
         try {
           const config = await jsonp({ action: "config" });
           if (!config || !config.ok) throw new Error("Invalid config");
-          state.config = config;
+          state.config = {
+            ...config,
+            dates: (config.dates || []).map(({ id, label, time, active, order }) => ({
+              id,
+              label: String(label || ""),
+              time: String(time || ""),
+              active: Boolean(active),
+              order: Number(order || 0)
+            }))
+          };
           state.backendAvailable = true;
-          state.activeRoomId = (config.rooms || []).find((room) => room.active)?.id || "woonkamer";
+          state.activeRoomId = (state.config.rooms || []).find((room) => room.active)?.id || "woonkamer";
           $("#backendNotice").classList.add("hidden");
         } catch (_) {
           state.config = fallbackConfig;
