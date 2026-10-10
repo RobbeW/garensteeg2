@@ -115,7 +115,7 @@
     .progress-head { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 10px; font-size: 14px; }
     .progress-head strong { font-weight: 750; }
     .progress-head span { color: var(--text-muted); }
-    .progress-bars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 34px; }
+    .progress-bars { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 34px; }
     .progress-bars span { height: 6px; border-radius: 999px; background: var(--border); }
     .progress-bars span.active { background: var(--accent); }
 
@@ -231,6 +231,16 @@
     .lightbox-stage img { width: 100%; max-height: 78vh; object-fit: contain; }
     .lightbox-stage .gallery-nav { padding: 12px; }
 
+    .room-decision { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .room-decision .btn { padding: 17px 20px; font-size: 16px; min-height: 62px; }
+    .message-input { width: 100%; min-height: 146px; resize: vertical; border: 1px solid var(--border); border-radius: 12px; background: var(--background); padding: 14px 16px; color: var(--text); font: inherit; font-size: 16px; line-height: 1.6; }
+    .message-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .message-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 9px; font-size: 12px; color: var(--text-muted); }
+    .message-board-link { margin-top: 18px; }
+    .message-card { margin-bottom: 12px; padding: 17px 19px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+    .message-card p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.7; }
+    .message-card small { display: block; margin-top: 10px; color: var(--text-muted); }
+    @media (min-width: 640px) { .room-decision { grid-template-columns: 1fr 1fr; } }
     @media (min-width: 640px) {
       .form-card { padding: 32px; }
       .choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -269,9 +279,9 @@
     <section class="hero">
       <div class="shell hero-grid">
         <div>
-          <p class="eyebrow">9–13 oktober 2026</p>
+          <p class="eyebrow">16–20 oktober 2026</p>
           <h1>Help je mee verhuizen?</h1>
-          <p class="hero-copy">Kies wanneer je kan helpen, wat je meebrengt en eventueel welke kamer je onder je hoede neemt. Help jij ons verhuizen?</p>
+          <p class="hero-copy">Onze verhuis werd uitgesteld. We rekenen opnieuw op extra helpende handen van 16 tot 20 oktober. Kies wanneer en hoe je kan helpen.</p>
           <div class="route-chipline" aria-label="Verhuisroute">
             <span class="route-chip">Garensteeg 2</span>
             <span class="route-arrow" aria-hidden="true">→</span>
@@ -294,8 +304,9 @@
     <section class="main">
       <div class="shell">
         <div class="form-card">
+          <div class="notice" id="newPlanningNotice">Nieuwe verhuisdata: 16 tot en met 20 oktober. Had je je al ingeschreven voor 9–13 oktober? Dan vragen we je vriendelijk om opnieuw in te schrijven.</div>
           <div id="progress">
-            <div class="progress-head"><strong id="progressLabel">Voornaam</strong><span id="progressNumber">1 / 5</span></div>
+            <div class="progress-head"><strong id="progressLabel">Voornaam</strong><span id="progressNumber">1 / 6</span></div>
             <div class="progress-bars" id="progressBars" aria-hidden="true"></div>
           </div>
 
@@ -336,44 +347,69 @@
 
           <section class="step hidden" data-step="3">
             <p class="step-eyebrow">Stap 4 · optioneel</p>
-            <h2>Neem een kamer onder je hoede</h2>
-            <p class="step-description">Bekijk links wat uit de oude woning komt en rechts waar het in de nieuwe woning terechtkomt. Een kamer kiezen is niet verplicht, maar zo weet je meteen wat jouw terrein is!</p>
-            <div class="room-tabs" id="roomTabs"></div>
-            <div class="room-titlebar">
-              <div><p>Ruimte</p><h3 id="activeRoomLabel"></h3></div>
-              <span class="owner-chip hidden" id="ownerChip">✓ Jouw kamer</span>
+            <h2>Wil je een kamer kiezen?</h2>
+            <p class="step-description">Een kamer kiezen hoeft helemaal niet. Als je er wél eentje kiest, weet je meteen wat jouw terrein is.</p>
+            <div class="room-decision" id="roomDecision">
+              <button class="btn btn-primary" id="skipRoom" type="button">Geen kamer kiezen →</button>
+              <button class="btn btn-secondary" id="chooseRoom" type="button">Ik wil een kamer kiezen</button>
             </div>
-            <div class="gallery-grid">
-              <div class="gallery-pane">
-                <div class="gallery-head"><strong>Oude woning</strong><span>Garensteeg 2</span></div>
-                <div class="gallery-stage" id="oldGalleryStage"></div>
-                <div class="gallery-foot"><span id="oldGalleryCount"></span><span>Bekijk de ruimte</span></div>
+            <div class="hidden" id="roomDetails">
+              <p class="step-description" style="margin-top:24px">Bekijk links de oude woning en rechts de nieuwe woning. Selecteer vervolgens een kamer die je onder je hoede neemt.</p>
+              <div class="room-tabs" id="roomTabs"></div>
+              <div class="room-titlebar">
+                <div><p>Ruimte</p><h3 id="activeRoomLabel"></h3></div>
+                <span class="owner-chip hidden" id="ownerChip">✓ Jouw kamer</span>
               </div>
-              <div class="gallery-pane">
-                <div class="gallery-head"><strong>Nieuwe woning</strong><span>Auguste Van Ooststraat 67</span></div>
-                <div class="gallery-stage" id="newGalleryStage"></div>
-                <div class="gallery-foot"><span id="newGalleryCount"></span><span>Bekijk de ruimte</span></div>
+              <div class="gallery-grid">
+                <div class="gallery-pane">
+                  <div class="gallery-head"><strong>Oude woning</strong><span>Garensteeg 2</span></div>
+                  <div class="gallery-stage" id="oldGalleryStage"></div>
+                  <div class="gallery-foot"><span id="oldGalleryCount"></span><span>Bekijk de ruimte</span></div>
+                </div>
+                <div class="gallery-pane">
+                  <div class="gallery-head"><strong>Nieuwe woning</strong><span>Auguste Van Ooststraat 67</span></div>
+                  <div class="gallery-stage" id="newGalleryStage"></div>
+                  <div class="gallery-foot"><span id="newGalleryCount"></span><span>Bekijk de ruimte</span></div>
+                </div>
+              </div>
+              <div class="ownership">
+                <p>Wil je vooral met deze ruimte helpen?</p>
+                <button class="btn btn-primary" id="toggleRoomOwnership" type="button">Ik neem deze kamer</button>
+              </div>
+              <div class="nav-row">
+                <button class="btn btn-secondary" id="chooseNoRoom" type="button">Toch geen kamer kiezen</button>
+                <button class="btn btn-primary" id="toMessages" type="button">Verder →</button>
               </div>
             </div>
-            <div class="ownership">
-              <p>Kies deze kamer als je vooral spullen van en naar deze ruimte wil helpen verplaatsen.</p>
-              <button class="btn btn-primary" id="toggleRoomOwnership" type="button">Ik neem deze kamer</button>
-            </div>
-            <div class="nav-row">
+            <div class="nav-row" id="roomBackRow">
               <button class="btn btn-secondary" data-back type="button">← Terug</button>
-              <button class="btn btn-primary" id="toReview" type="button">Verder zonder specifieke kamer →</button>
             </div>
           </section>
 
           <section class="step hidden" data-step="4">
-            <p class="step-eyebrow">Stap 5</p>
+            <p class="step-eyebrow">Stap 5 · optioneel</p>
+            <h2>Een berichtje voor Els?</h2>
+            <p class="step-description">Wil je Els van het notariskantoor een vriendelijk woordje meegeven? Laat hier vrijblijvend een berichtje achter. Het bericht wordt zonder naam op het prikbord getoond, na onze controle.</p>
+            <label for="kindMessage" class="field-label">Jouw anonieme boodschap (optioneel)</label>
+            <textarea class="message-input" id="kindMessage" maxlength="400" rows="5" placeholder="Een vriendelijk berichtje voor Els…"></textarea>
+            <div class="message-meta"><span>Vermeld geen persoonsgegevens. Berichten worden eerst nagekeken.</span><span id="messageCount">0 / 400</span></div>
+            <button class="link-button message-board-link" id="openMessagesFromStep" type="button">Lees de goedgekeurde berichten →</button>
+            <div class="nav-row">
+              <button class="btn btn-secondary" data-back type="button">← Terug</button>
+              <button class="btn btn-primary" id="toReview" type="button">Berichtje overslaan →</button>
+            </div>
+          </section>
+
+          <section class="step hidden" data-step="5">
+            <p class="step-eyebrow">Stap 6</p>
             <h2>Klopt dit?</h2>
-            <p class="step-description">Controleer je inschrijving. Je voornaam en keuzes worden zichtbaar in het verhuisteam.</p>
+            <p class="step-description">Controleer je inschrijving. Je voornaam en keuzes worden zichtbaar in het verhuisteam. Een eventueel berichtje verschijnt zonder naam na goedkeuring.</p>
             <div class="review">
               <div class="review-row"><span class="review-label">Voornaam</span><span class="review-value" id="reviewName"></span><button class="link-button" type="button" data-goto="0">Wijzig</button></div>
               <div class="review-row"><span class="review-label">Momenten</span><span class="review-value" id="reviewDate"></span><button class="link-button" type="button" data-goto="1">Wijzig</button></div>
               <div class="review-row"><span class="review-label">Bijdrage</span><span class="review-value" id="reviewHelp"></span><button class="link-button" type="button" data-goto="2">Wijzig</button></div>
               <div class="review-row"><span class="review-label">Kamer</span><span class="review-value" id="reviewRoom"></span><button class="link-button" type="button" data-goto="3">Wijzig</button></div>
+              <div class="review-row"><span class="review-label">Berichtje</span><span class="review-value" id="reviewMessage"></span><button class="link-button" type="button" data-goto="4">Wijzig</button></div>
             </div>
             <div class="notice hidden" id="closedNotice">De inschrijvingen zijn gesloten.</div>
             <div class="error hidden" id="submitError" role="alert"></div>
@@ -383,13 +419,14 @@
             </div>
           </section>
 
-          <section class="step hidden thanks" data-step="5">
+          <section class="step hidden thanks" data-step="6">
             <div class="thanks-check" aria-hidden="true">✓</div>
             <p class="step-eyebrow" style="margin-top:24px">Dank je, <span id="thanksName"></span></p>
             <h2>Je staat op het verhuisteam.</h2>
             <p class="thanks-copy" id="thanksCopy"></p>
             <div class="thanks-actions">
               <button class="btn btn-secondary" id="openRosterThanks" type="button">Bekijk het team</button>
+              <button class="btn btn-secondary" id="openMessagesThanks" type="button">Bekijk berichtjes</button>
               <a class="btn btn-secondary" id="drivingRoute" target="_blank" rel="noreferrer">Route met auto</a>
               <a class="btn btn-secondary" id="bikeRoute" target="_blank" rel="noreferrer">Route met bakfiets</a>
             </div>
@@ -404,7 +441,7 @@
   </main>
 
   <footer>
-    <div class="shell footer-inner"><span>Verhuisplanning · oktober 2026</span><span>Alleen voornaam en gekozen hulp worden opgeslagen.</span></div>
+    <div class="shell footer-inner"><span>Verhuisplanning · oktober 2026</span><span>Je voornaam en keuzes staan op het teamoverzicht; berichtjes worden zonder naam getoond.</span></div>
   </footer>
 
   <div class="modal hidden" id="rosterModal" role="dialog" aria-modal="true" aria-label="Verhuisteam">
@@ -414,6 +451,16 @@
         <button class="icon-button" id="closeRoster" type="button" aria-label="Sluit verhuisteam">×</button>
       </div>
       <div class="modal-body" id="rosterBody"><div class="loading">Team laden…</div></div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="messagesModal" role="dialog" aria-modal="true" aria-label="Berichtjes voor Els">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div><p class="step-eyebrow">Prikbord</p><h2>Berichtjes voor Els</h2></div>
+        <button class="icon-button" id="closeMessages" type="button" aria-label="Sluit prikbord">×</button>
+      </div>
+      <div class="modal-body" id="messagesBody"><div class="loading">Berichten laden…</div></div>
     </div>
   </div>
 
@@ -439,23 +486,23 @@
 
       const API_URL = "https://script.google.com/macros/s/AKfycbxyyX2o3ka0PTrcM-fdyzCjsVBM_e5ZzW92jyvtC-wrhB6_WnVwaBT-JbOpFe4FFZPtzQ/exec";
       const RAW_AVO = "https://raw.githubusercontent.com/RobbeW/garensteeg2/main/Photos_AVO/";
-      const stepLabels = ["Voornaam", "Momenten", "Bijdrage", "Kamer", "Controle"];
+      const stepLabels = ["Voornaam", "Momenten", "Bijdrage", "Kamer", "Berichtje", "Controle"];
 
       const fallbackConfig = {
         ok: true,
         registrationOpen: true,
         dates: [
-          { id: "vrijdag_09_10_avond", label: "Vrijdag", time: "Avond na 18 uur", active: true, order: 1 },
-          { id: "zaterdag_10_10_voormiddag", label: "Zaterdag", time: "Voormiddag", active: true, order: 2 },
-          { id: "zaterdag_10_10_namiddag", label: "Zaterdag", time: "Namiddag", active: true, order: 3 },
-          { id: "zondag_11_10_voormiddag", label: "Zondag", time: "Voormiddag", active: true, order: 4 },
-          { id: "zondag_11_10_namiddag", label: "Zondag", time: "Namiddag", active: true, order: 5 },
-          { id: "maandag_12_10_voormiddag", label: "Maandag", time: "Voormiddag", active: true, order: 6 },
-          { id: "maandag_12_10_namiddag", label: "Maandag", time: "Namiddag", active: true, order: 7 },
-          { id: "maandag_12_10_avond", label: "Maandag", time: "Avond na 18 uur", active: true, order: 8 },
-          { id: "dinsdag_13_10_voormiddag", label: "Dinsdag", time: "Voormiddag", active: true, order: 9 },
-          { id: "dinsdag_13_10_namiddag", label: "Dinsdag", time: "Namiddag", active: true, order: 10 },
-          { id: "dinsdag_13_10_avond", label: "Dinsdag", time: "Avond na 18 uur", active: true, order: 11 }
+          { id: "vrijdag_16_10_avond", label: "Vrijdag", time: "Avond na 18 uur", active: true, order: 1 },
+          { id: "zaterdag_17_10_voormiddag", label: "Zaterdag", time: "Voormiddag", active: true, order: 2 },
+          { id: "zaterdag_17_10_namiddag", label: "Zaterdag", time: "Namiddag", active: true, order: 3 },
+          { id: "zondag_18_10_voormiddag", label: "Zondag", time: "Voormiddag", active: true, order: 4 },
+          { id: "zondag_18_10_namiddag", label: "Zondag", time: "Namiddag", active: true, order: 5 },
+          { id: "maandag_19_10_voormiddag", label: "Maandag", time: "Voormiddag", active: true, order: 6 },
+          { id: "maandag_19_10_namiddag", label: "Maandag", time: "Namiddag", active: true, order: 7 },
+          { id: "maandag_19_10_avond", label: "Maandag", time: "Avond na 18 uur", active: true, order: 8 },
+          { id: "dinsdag_20_10_voormiddag", label: "Dinsdag", time: "Voormiddag", active: true, order: 9 },
+          { id: "dinsdag_20_10_namiddag", label: "Dinsdag", time: "Namiddag", active: true, order: 10 },
+          { id: "dinsdag_20_10_avond", label: "Dinsdag", time: "Avond na 18 uur", active: true, order: 11 }
         ],
         helpTypes: [
           { id: "spierkracht", label: "Spierkracht", active: true, order: 1 },
@@ -529,6 +576,7 @@
         dateIds: [],
         helpTypes: [],
         roomId: "",
+        message: "",
         activeRoomId: "woonkamer",
         oldIndex: 0,
         newIndex: 0,
@@ -609,6 +657,7 @@
           dateIds: payload.dateIds.join("|"),
           helpTypes: payload.helpTypes.join("|"),
           roomId: payload.roomId,
+          message: payload.message || "",
           website: ""
         };
 
@@ -642,6 +691,9 @@
         state.dateIds = Array.isArray(pending.dateIds) ? pending.dateIds : [];
         state.helpTypes = Array.isArray(pending.helpTypes) ? pending.helpTypes : [];
         state.roomId = String(pending.roomId || "");
+        state.message = String(pending.message || "").slice(0, 400);
+        $("#kindMessage").value = state.message;
+        updateMessageCount();
         if (state.roomId) state.activeRoomId = state.roomId;
         $("#firstName").value = state.firstName;
         $("#toDate").disabled = !(state.firstName.length > 0 && state.firstName.length <= 40);
@@ -661,19 +713,20 @@
 
         $("#drivingRoute").href = mapsUrl("driving");
         $("#bikeRoute").href = mapsUrl("bicycling");
+        if (state.message.trim()) $("#thanksCopy").textContent += " Je berichtje verschijnt op het prikbord nadat we het hebben nagekeken.";
         sessionStorage.removeItem("verhuis-pending-registration");
-        showStep(5);
+        showStep(6);
       }
 
       function updateProgress() {
         const progress = $("#progress");
-        if (state.step >= 5) {
+        if (state.step >= 6) {
           progress.classList.add("hidden");
           return;
         }
         progress.classList.remove("hidden");
         $("#progressLabel").textContent = stepLabels[state.step];
-        $("#progressNumber").textContent = `${state.step + 1} / 5`;
+        $("#progressNumber").textContent = `${state.step + 1} / 6`;
         $("#progressBars").innerHTML = stepLabels.map((_, index) => `<span class="${index <= state.step ? "active" : ""}"></span>`).join("");
       }
 
@@ -681,7 +734,7 @@
         state.step = Number(step);
         $$(".step").forEach((section) => section.classList.toggle("hidden", Number(section.dataset.step) !== state.step));
         updateProgress();
-        if (state.step === 4) updateReview();
+        if (state.step === 5) updateReview();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
@@ -753,7 +806,7 @@
         $("#ownerChip").classList.toggle("hidden", state.roomId !== state.activeRoomId);
         $("#toggleRoomOwnership").textContent = state.roomId === state.activeRoomId ? "Kamer loslaten" : "Ik neem deze kamer";
         $("#toggleRoomOwnership").className = `btn ${state.roomId === state.activeRoomId ? "btn-secondary" : "btn-primary"}`;
-        $("#toReview").textContent = state.roomId ? "Controleer mijn keuze →" : "Verder zonder specifieke kamer →";
+
         renderGallery("old");
         renderGallery("new");
       }
@@ -764,6 +817,7 @@
         $("#reviewDate").textContent = dates.length ? dates.map((date) => `${date.label} · ${date.time}`).join("; ") : "—";
         $("#reviewHelp").textContent = state.config.helpTypes.filter((type) => state.helpTypes.includes(type.id)).map((type) => type.label).join(" · ");
         $("#reviewRoom").textContent = selectedRoom()?.label || "Geen specifieke kamer";
+        $("#reviewMessage").textContent = state.message.trim() ? "Ja, ter goedkeuring" : "Geen berichtje";
         $("#closedNotice").classList.toggle("hidden", state.config.registrationOpen !== false);
         $("#submitRegistration").disabled = !(state.config.registrationOpen !== false && !state.submitting);
       }
@@ -825,6 +879,27 @@
         }
       }
 
+      async function openMessages() {
+        $("#messagesModal").classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+        $("#messagesBody").innerHTML = '<div class="loading">Berichtjes laden…</div>';
+        try {
+          const response = await jsonp({ action: "messages" }, 12000);
+          if (!response.ok) throw new Error("Prikbord niet beschikbaar");
+          const messages = Array.isArray(response.messages) ? response.messages : [];
+          $("#messagesBody").innerHTML = messages.length
+            ? messages.map((item) => `<article class="message-card"><p>${escapeHtml(item.text || "")}</p><small>Anoniem bericht</small></article>`).join("")
+            : '<p class="roster-empty">Er zijn nog geen goedgekeurde berichtjes.</p>';
+        } catch (_) {
+          $("#messagesBody").innerHTML = '<div class="error" style="margin:0">De berichtjes konden niet worden geladen. Probeer het later opnieuw.</div>';
+        }
+      }
+
+      function closeMessages() {
+        $("#messagesModal").classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+
       function closeRoster() {
         $("#rosterModal").classList.add("hidden");
         document.body.style.overflow = "";
@@ -851,7 +926,7 @@
         }
 
         if (result === "error") {
-          showStep(4);
+          showStep(5);
           $("#submitError").textContent = params.get("message") || "De inschrijving kon niet worden opgeslagen. Probeer opnieuw.";
           $("#submitError").classList.remove("hidden");
         }
@@ -885,7 +960,11 @@
         state.helpTypes = state.helpTypes.includes(id) ? state.helpTypes.filter((item) => item !== id) : [...state.helpTypes, id];
         renderHelp();
       });
-      $("#toRoom").addEventListener("click", () => { renderRoom(); showStep(3); });
+      $("#toRoom").addEventListener("click", () => { renderRoom(); $("#roomDetails").classList.add("hidden"); $("#roomDecision").classList.remove("hidden"); $("#roomBackRow").classList.remove("hidden"); showStep(3); });
+      $("#skipRoom").addEventListener("click", () => { state.roomId = ""; showStep(4); });
+      $("#chooseRoom").addEventListener("click", () => { $("#roomDetails").classList.remove("hidden"); $("#roomDecision").classList.add("hidden"); $("#roomBackRow").classList.add("hidden"); renderRoom(); });
+      $("#chooseNoRoom").addEventListener("click", () => { state.roomId = ""; showStep(4); });
+      $("#toMessages").addEventListener("click", () => showStep(4));
 
       $("#roomTabs").addEventListener("click", (event) => {
         const button = event.target.closest("[data-room-tab]");
@@ -900,7 +979,9 @@
         state.roomId = state.roomId === state.activeRoomId ? "" : state.activeRoomId;
         renderRoom();
       });
-      $("#toReview").addEventListener("click", () => showStep(4));
+      $("#toReview").addEventListener("click", () => showStep(5));
+      function updateMessageCount() { $("#messageCount").textContent = `${state.message.length} / 400`; $("#toReview").textContent = state.message.trim() ? "Verder naar controle →" : "Berichtje overslaan →"; }
+      $("#kindMessage").addEventListener("input", (event) => { state.message = event.target.value.slice(0,400); updateMessageCount(); });
 
       document.addEventListener("click", (event) => {
         const back = event.target.closest("[data-back]");
@@ -949,12 +1030,17 @@
           firstName: state.firstName,
           dateIds: state.dateIds,
           helpTypes: state.helpTypes,
-          roomId: state.roomId
+          roomId: state.roomId,
+          message: state.message.trim()
         });
       });
 
       $("#openRosterTop").addEventListener("click", openRoster);
       $("#openRosterThanks").addEventListener("click", openRoster);
+      $("#openMessagesThanks").addEventListener("click", openMessages);
+      $("#openMessagesFromStep").addEventListener("click", openMessages);
+      $("#closeMessages").addEventListener("click", closeMessages);
+      $("#messagesModal").addEventListener("click", (event) => { if (event.target === $("#messagesModal")) closeMessages(); });
       $("#closeRoster").addEventListener("click", closeRoster);
       $("#rosterModal").addEventListener("click", (event) => { if (event.target === $("#rosterModal")) closeRoster(); });
 
@@ -973,6 +1059,7 @@
         if (event.key === "Escape") {
           if (!$("#lightbox").classList.contains("hidden")) closeLightbox();
           else if (!$("#rosterModal").classList.contains("hidden")) closeRoster();
+          else if (!$("#messagesModal").classList.contains("hidden")) closeMessages();
         }
         if (!$("#lightbox").classList.contains("hidden") && state.lightbox.photos.length > 1) {
           if (event.key === "ArrowLeft") $("#lightboxPrev").click();
